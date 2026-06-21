@@ -1,0 +1,82 @@
+name: Bug report
+description: Report a reproducible problem in the public export
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please include enough detail for someone else to reproduce it from this public repository.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues for the same problem
+          required: true
+        - label: I confirmed this issue belongs in the public export and does not include private credentials or service config
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Android app
+        - Windows app
+        - Build or Gradle
+        - Documentation
+        - Tooling
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the problem and what you expected instead.
+      placeholder: The app crashes when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the exact steps needed to reproduce the issue.
+      placeholder: |
+        1. Run ...
+        2. Open ...
+        3. Tap ...
+        4. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Share the relevant setup details.
+      placeholder: |
+        OS:
+        JDK:
+        Android Studio or Gradle version:
+        Device or emulator:
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs, stack traces, or screenshots
+      description: Paste only the relevant parts. Remove tokens, IDs, secrets, and machine-specific private data first.
+      render: shell
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional context
+      description: Add anything else that might help investigate.

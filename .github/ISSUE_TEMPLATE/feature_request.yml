@@ -1,0 +1,73 @@
+name: Feature request
+description: Suggest an improvement for the public export
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea. Clear problem statements help a lot, especially when the project spans Android, desktop, and shared tooling.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues for similar requests
+          required: true
+        - label: This request can be discussed publicly without exposing private project details or credentials
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Android app
+        - Windows app
+        - Shared architecture
+        - Build or Gradle
+        - Documentation
+        - Tooling
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: Describe the user or developer pain point first.
+      placeholder: It is hard to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the feature, behavior, or workflow you would like to see.
+      placeholder: I would like PulseDeck to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Why this fits the project
+      description: Explain why this belongs in the public export and how it helps contributors or users.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: List any workarounds or other approaches you already considered.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Mockups, references, screenshots, or related issues are welcome.
