@@ -43,6 +43,10 @@ Set `ANDROID_HOME` and `ANDROID_SDK_ROOT`, or create an untracked `local.propert
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for setup notes, testing expectations, and public-export safety rules before opening an issue or pull request.
 
+## Security
+
+See [SECURITY.md](SECURITY.md) for vulnerability reporting guidance. Please do not post sensitive security details in a public issue.
+
 ## Before Publishing
 
 1. Review [docs/EXPORT_SCOPE.md](docs/EXPORT_SCOPE.md).
