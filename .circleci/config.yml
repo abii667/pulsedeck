@@ -1,0 +1,160 @@
+version: 2.1
+
+executors:
+  android:
+    docker:
+      - image: cimg/android:2025.04
+    resource_class: large
+    working_directory: ~/pulsedeck
+
+commands:
+  install_native_audio_tools:
+    steps:
+      - run:
+          name: Install native audio toolchain
+          command: yes | sdkmanager "ndk;27.0.12077973" "cmake;3.22.1"
+  restore_gradle_cache:
+    steps:
+      - restore_cache:
+          keys:
+            - gradle-v1-{{ checksum "gradle/libs.versions.toml" }}-{{ checksum "settings.gradle.kts" }}
+            - gradle-v1-
+  save_gradle_cache:
+    steps:
+      - save_cache:
+          key: gradle-v1-{{ checksum "gradle/libs.versions.toml" }}-{{ checksum "settings.gradle.kts" }}
+          paths:
+            - ~/.gradle/caches
+            - ~/.gradle/wrapper
+
+jobs:
+  gradle_test:
+    executor: android
+    steps:
+      - checkout
+      - restore_gradle_cache
+      - run:
+          name: Unit tests
+          command: ./gradlew :app:testDebugUnitTest --stacktrace
+      - store_test_results:
+          path: app/build/test-results
+      - store_artifacts:
+          path: app/build/reports/tests
+      - save_gradle_cache
+
+  assemble_debug:
+    executor: android
+    steps:
+      - checkout
+      - restore_gradle_cache
+      - run:
+          name: Assemble debug APK
+          command: ./gradlew :app:assembleDebug --stacktrace
+      - store_artifacts:
+          path: app/build/outputs/apk/debug
+      - save_gradle_cache
+
+  lint_debug:
+    executor: android
+    steps:
+      - checkout
+      - restore_gradle_cache
+      - run:
+          name: Android lint
+          command: ./gradlew :app:lintDebug --stacktrace
+      - store_artifacts:
+          path: app/build/reports/lint-results-debug.html
+      - save_gradle_cache
+
+  dependency_audit:
+    executor: android
+    steps:
+      - checkout
+      - restore_gradle_cache
+      - run:
+          name: Dependency report
+          command: ./gradlew :app:dependencies --configuration debugRuntimeClasspath
+      - store_artifacts:
+          path: app/build/reports
+      - save_gradle_cache
+
+  native_audio_checks:
+    executor: android
+    steps:
+      - checkout
+      - install_native_audio_tools
+      - restore_gradle_cache
+      - run:
+          name: Native audio build and unit checks
+          command: ./gradlew :app:assembleDebug :app:testDebugUnitTest --stacktrace
+      - store_test_results:
+          path: app/build/test-results
+      - store_artifacts:
+          path: app/build/outputs/apk/debug
+      - save_gradle_cache
+
+  audio_thread_safety_scan:
+    executor: android
+    steps:
+      - checkout
+      - run:
+          name: Scan native callback safety patterns
+          command: bash tools/audio_thread_safety_scan.sh app/src/main/cpp | tee audio-thread-safety-scan.txt
+      - store_artifacts:
+          path: audio-thread-safety-scan.txt
+
+  release_gate:
+    executor: android
+    steps:
+      - checkout
+      - install_native_audio_tools
+      - restore_gradle_cache
+      - run:
+          name: Release build gate
+          command: ./gradlew :app:assembleRelease :app:lintRelease --stacktrace
+      - store_artifacts:
+          path: app/build/outputs/apk/release
+      - store_artifacts:
+          path: app/build/reports
+      - save_gradle_cache
+
+  artifact_upload:
+    executor: android
+    steps:
+      - checkout
+      - restore_gradle_cache
+      - run:
+          name: Build APK and test reports
+          command: ./gradlew :app:testDebugUnitTest :app:assembleDebug
+      - store_test_results:
+          path: app/build/test-results
+      - store_artifacts:
+          path: app/build/reports
+      - store_artifacts:
+          path: app/build/outputs/apk/debug
+      - save_gradle_cache
+
+workflows:
+  pulse_settings_platform:
+    jobs:
+      - gradle_test
+      - lint_debug
+      - dependency_audit
+      - native_audio_checks:
+          requires:
+            - gradle_test
+      - audio_thread_safety_scan
+      - release_gate:
+          requires:
+            - native_audio_checks
+            - lint_debug
+      - assemble_debug:
+          requires:
+            - gradle_test
+      - artifact_upload:
+          requires:
+            - assemble_debug
+            - lint_debug
+            - dependency_audit
+            - native_audio_checks
+            - audio_thread_safety_scan

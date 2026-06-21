@@ -1,0 +1,12 @@
+.gradle/
+.kotlin/
+build/
+app/build/
+app/.cxx/
+windowsApp/build/
+local.properties
+*.apk
+*.hprof
+*.log
+*.pyc
+.DS_Store

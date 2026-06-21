@@ -1,0 +1,29 @@
+{
+  "model_name": "PremiumDeck TinyRec v1",
+  "asset_name": "premiumdeck_tinyrec_v1.tflite",
+  "created_at_ms": 1780147335552,
+  "bootstrap_sample": true,
+  "candidate_count": 256,
+  "event_count": 1920,
+  "training_example_count": 7680,
+  "input_order": [
+    "codebook_ids",
+    "user_vector"
+  ],
+  "input_shapes": {
+    "codebook_ids": [
+      1,
+      4
+    ],
+    "user_vector": [
+      1,
+      64
+    ]
+  },
+  "output_shape": [
+    1,
+    1
+  ],
+  "size_bytes": 83808,
+  "warning": "Bootstrap models validate the pipeline only; train with real PremiumDeck events before production use."
+}
