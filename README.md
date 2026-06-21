@@ -2,6 +2,17 @@
 
 This folder is a curated public-safe export of the PulseDeck workspace. It keeps the Android app source, the Windows desktop project, the Gradle build files, and selected tooling, while leaving out private project wiring, generated artifacts, and internal operational material.
 
+## Overview
+
+PulseDeck is a multi-surface music app project with:
+
+- an Android app in `app/`
+- a Windows desktop app in `windowsApp/`
+- shared Gradle build configuration at the repository root
+- selected tooling in `tools/`
+
+This public repository is intentionally scoped for open collaboration. Some private or project-linked runtime integrations are deliberately omitted or disabled in this export.
+
 ## What This Export Keeps
 
 - Android app source in `app/`
@@ -24,6 +35,18 @@ Some network-backed integrations are intentionally disconnected in this export s
 
 Firebase dependencies remain in the Android build, but the project-specific config file is intentionally absent. The app is expected to compile without it, with Firebase-backed beta/runtime behavior staying unavailable until a fresh public or private Firebase project is configured.
 
+## Quick Start
+
+### Prerequisites
+
+- JDK 21
+- Android SDK
+- Android SDK platform for `compileSdk = 36`
+- Android NDK `27.0.12077973`
+- CMake `3.22.1`
+
+Set `ANDROID_HOME` and `ANDROID_SDK_ROOT`, or create an untracked `local.properties`, before building the Android app.
+
 ## License
 
 This export is released under `GPL-3.0-or-later`.
@@ -32,12 +55,26 @@ That is the conservative choice for the current codebase because the Android app
 
 ## Build
 
-Set `ANDROID_HOME` and `ANDROID_SDK_ROOT`, or create an untracked `local.properties`, before building the Android app.
-
 ```powershell
 .\gradlew.bat :app:assembleDebug
+.\gradlew.bat :app:testDebugUnitTest
 .\gradlew.bat -p windowsApp run
 ```
+
+Optional Windows packaging commands:
+
+```powershell
+.\gradlew.bat -p windowsApp packageMsi
+.\gradlew.bat -p windowsApp packageExe
+```
+
+## Repository Layout
+
+- `app/` Android application source
+- `windowsApp/` Windows desktop application source
+- `gradle/` shared Gradle catalog and wrapper support files
+- `tools/` selected helper scripts and TinyRec training utilities
+- `docs/` export-scope, licensing, and publish notes
 
 ## Contributing
 
