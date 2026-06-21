@@ -1,13 +1,12 @@
 # PulseDeck Public Export
 
-This folder is a curated public-safe export of the PulseDeck workspace. It keeps the Android app source, the Windows desktop project, the Gradle build files, and selected tooling, while leaving out private project wiring, generated artifacts, and internal operational material.
+This folder is a curated public-safe export of the PulseDeck workspace. It keeps the Android app source, the Gradle build files, and selected tooling, while leaving out private project wiring, generated artifacts, and internal operational material.
 
 ## Overview
 
-PulseDeck is a multi-surface music app project with:
+PulseDeck is currently published as an Android-focused music app project with:
 
 - an Android app in `app/`
-- a Windows desktop app in `windowsApp/`
 - shared Gradle build configuration at the repository root
 - selected tooling in `tools/`
 
@@ -16,7 +15,6 @@ This public repository is intentionally scoped for open collaboration. Some priv
 ## What This Export Keeps
 
 - Android app source in `app/`
-- Windows desktop app source in `windowsApp/`
 - Gradle wrapper and shared build configuration
 - Selected developer tooling in `tools/`
 - CircleCI config in `.circleci/`
@@ -58,20 +56,11 @@ That is the conservative choice for the current codebase because the Android app
 ```powershell
 .\gradlew.bat :app:assembleDebug
 .\gradlew.bat :app:testDebugUnitTest
-.\gradlew.bat -p windowsApp run
-```
-
-Optional Windows packaging commands:
-
-```powershell
-.\gradlew.bat -p windowsApp packageMsi
-.\gradlew.bat -p windowsApp packageExe
 ```
 
 ## Repository Layout
 
 - `app/` Android application source
-- `windowsApp/` Windows desktop application source
 - `gradle/` shared Gradle catalog and wrapper support files
 - `tools/` selected helper scripts and TinyRec training utilities
 - `docs/` export-scope, licensing, and publish notes

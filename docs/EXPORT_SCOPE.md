@@ -3,7 +3,6 @@
 ## Included
 
 - `app/`
-- `windowsApp/`
 - `gradle/`
 - `.circleci/`
 - `tools/audio_thread_safety_scan.*`
@@ -24,7 +23,6 @@
 - `artifacts/`
 - `build/`
 - `app/build/`
-- `windowsApp/build/`
 - `tmp/`, `tmp_*`, and other scratch/export folders
 - screenshots, XML captures, APKs, logs, heap dumps, and other generated evidence
 - `local.properties`

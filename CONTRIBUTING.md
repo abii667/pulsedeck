@@ -41,14 +41,6 @@ From the repository root:
 ```powershell
 .\gradlew.bat :app:assembleDebug
 .\gradlew.bat :app:testDebugUnitTest
-.\gradlew.bat -p windowsApp run
-```
-
-Optional Windows packaging commands:
-
-```powershell
-.\gradlew.bat -p windowsApp packageMsi
-.\gradlew.bat -p windowsApp packageExe
 ```
 
 Instrumentation tests live under `app/src/androidTest` and may require a configured emulator or physical device.
@@ -66,7 +58,6 @@ Instrumentation tests live under `app/src/androidTest` and may require a configu
 
 - Bug fixes
 - Android UI and playback improvements
-- Windows desktop improvements
 - Tests and reliability work
 - Documentation and onboarding improvements
 - Tooling and developer workflow cleanup
